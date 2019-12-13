@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.christyantofernando.diffutil_boxes.adapter.NumberedBoxesAdapter;
 import com.christyantofernando.diffutil_boxes.model.NumberedBox;
@@ -37,6 +38,12 @@ public class MainActivity extends AppCompatActivity {
         });
         
         numberedBoxesAdapter = new NumberedBoxesAdapter();
+        numberedBoxesAdapter.setOnClickListener(new NumberedBoxesAdapter.OnClickListener() {
+            @Override
+            public void onClick (NumberedBox numberedBox) {
+                Toast.makeText(MainActivity.this, numberedBox.getNumber() + " clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
         recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         recyclerView.setAdapter(numberedBoxesAdapter);
         numberedBoxesAdapter.updateBoxes(getBoxes());

@@ -17,6 +17,11 @@ import java.util.List;
 
 public class NumberedBoxesAdapter extends RecyclerView.Adapter<NumberedBoxesAdapter.ViewHolder> {
     private List<NumberedBox> numberedBoxes = new ArrayList<>();
+    private OnClickListener onClickListener;
+    
+    public interface OnClickListener{
+        void onClick(NumberedBox numberedBox);
+    }
     
     @NonNull
     @Override
@@ -40,15 +45,26 @@ public class NumberedBoxesAdapter extends RecyclerView.Adapter<NumberedBoxesAdap
         diffResult.dispatchUpdatesTo(this);
     }
     
+    public void setOnClickListener(OnClickListener onClickListener){
+        this.onClickListener = onClickListener;
+    }
+    
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvNumber;
         
-        ViewHolder (@NonNull View itemView) {
+        ViewHolder (@NonNull final View itemView) {
             super(itemView);
             tvNumber = itemView.findViewById(R.id.tv_number);
         }
         
-        void bind (NumberedBox numberedBox){
+        void bind (final NumberedBox numberedBox){
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View view) {
+                    if(onClickListener == null) return;
+                    onClickListener.onClick(numberedBox);
+                }
+            });
             tvNumber.setText(String.valueOf(numberedBox.getNumber()));
             itemView.setBackgroundColor(itemView.getContext().getResources().getColor(numberedBox.getColorRes()));
         }
